@@ -56,7 +56,7 @@ public class GoogleOAuthService {
         String lastName = (String) payload.get("family_name");
 
         // Check if user already exists
-        Optional<User> existingUser = Optional.ofNullable(userRepository.findByEmailId(email));
+        Optional<User> existingUser = userRepository.findByEmailId(email);
 
         if (existingUser.isPresent()) {
             return existingUser.get();
@@ -76,8 +76,8 @@ public class GoogleOAuthService {
         String randomPassword = UUID.randomUUID().toString();
         newUser.setPassword(passwordEncoder.encode(randomPassword));
 
-        newUser.setCreated(new Date());
-        newUser.setUpdated(new Date());
+//        newUser.setCreated(new Date());
+//        newUser.setUpdated(new Date());
 
         // Save the new user
         return userRepository.save(newUser);

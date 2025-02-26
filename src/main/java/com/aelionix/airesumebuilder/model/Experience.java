@@ -1,21 +1,23 @@
 package com.aelionix.airesumebuilder.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.Date;
+import lombok.Data;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Table(name = "experiences")
 @Entity
+@Table(name = "experiences")
+@JsonIgnoreProperties({"candidateResume", "user"})
 public class Experience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long experienceId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -28,14 +30,19 @@ public class Experience {
     @Column(nullable = false)
     private String location;
 
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    private LocalDate endDate;
 
     @ElementCollection
     @CollectionTable(name = "experience_descriptions", joinColumns = @JoinColumn(name = "experience_id"))
     @Column(name = "description")
     private List<String> description;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resume_id")
+    private CandidateResume candidateResume;
+
 }

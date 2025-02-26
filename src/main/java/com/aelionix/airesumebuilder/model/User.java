@@ -2,7 +2,15 @@ package com.aelionix.airesumebuilder.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -13,6 +21,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -39,16 +48,22 @@ public class User {
 
     private String location;
 
-    private Date created;
+    @CreationTimestamp
+    @Column(name = "created", updatable = false)
+    private LocalDateTime created;
 
-    private Date updated;
+    @UpdateTimestamp
+    @Column(name = "updated")
+    private LocalDateTime updated;
 
     @Version
     private short lockId;
 
-    private String createUserId;
+    @CreatedBy
+    private String createdBy;
 
-    private String updateUserId;
+    @LastModifiedBy
+    private String lastModifiedBy;
 
 
     @Override

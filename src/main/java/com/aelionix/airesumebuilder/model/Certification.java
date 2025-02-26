@@ -14,20 +14,26 @@ public class Certification {
     @Column(name = "cert_id", nullable = false)
     private Long certId;
 
+    // Link to the candidate's user account (if needed)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // Links certification to a user
+    private User user;
+
+    // New field to link this certification to a specific resume
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resume_id")
+    private CandidateResume candidateResume;
 
     @Column(nullable = false)
     private String certificationName;
 
     @Column(nullable = false)
-    private String issuingOrganization;  // Example: Microsoft, Coursera, AWS
+    private String issuingOrganization;
 
     @Column(nullable = false)
     private LocalDate issueDate;
 
-    private LocalDate expiryDate;  // Some certifications have expiry dates (nullable)
+    private LocalDate expiryDate;
 
-    private String certificationUrl;  // Optional: Link to certification if available
+    private String certificationUrl;
 }

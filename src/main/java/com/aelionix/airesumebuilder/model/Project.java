@@ -15,25 +15,31 @@ public class Project {
     @Column(name = "project_id", nullable = false)
     private Long projectId;
 
-    @ManyToOne
+    // Link the project to a specific candidate resume
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resume_id")  // foreign key column in the projects table
+    private CandidateResume candidateResume;
+
+    // Optionally, you can still maintain a link to the user directly
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // Links project to a user
+    private User user;
 
     @Column(nullable = false)
     private String projectName;
 
     @Column(length = 1000)
-    private String description;  // Detailed project summary
+    private String description;
 
     @ElementCollection
     @CollectionTable(name = "project_technologies", joinColumns = @JoinColumn(name = "project_id"))
     @Column(name = "technology")
-    private List<String> technologiesUsed;  // List of technologies used in the project
+    private List<String> technologiesUsed;
 
     @Column(nullable = false)
     private LocalDate startDate;
 
-    private LocalDate endDate;  // Nullable for ongoing projects
+    private LocalDate endDate;
 
-    private String projectUrl;  // Optional: GitHub or live demo link
+    private String projectUrl;
 }

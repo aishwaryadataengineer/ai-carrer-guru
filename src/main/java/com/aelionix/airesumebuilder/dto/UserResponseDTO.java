@@ -1,7 +1,8 @@
 package com.aelionix.airesumebuilder.dto;
 
-public record LoginResponse(
-        String token,
+import java.time.LocalDateTime;
+
+public record UserResponseDTO(
         Long userId,
         String userName,
         String emailId,
@@ -9,5 +10,7 @@ public record LoginResponse(
         String lastName,
         String phone,
         String title,
-        String location
+        String location,
+        LocalDateTime created,
+        LocalDateTime updated
 ) {}
